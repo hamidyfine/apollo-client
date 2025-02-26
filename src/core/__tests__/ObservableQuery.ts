@@ -121,6 +121,7 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "network",
         });
 
         await observable.setOptions({ query, pollInterval: 10 });
@@ -130,6 +131,7 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "network",
         });
 
         observable.stopPolling();
@@ -2071,6 +2073,7 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "network",
         });
 
         await observableWithVariablesVar.refetch({ variables: ["d", "e"] });
@@ -2085,6 +2088,7 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "network",
         });
 
         expect(console.warn).not.toHaveBeenCalled();
@@ -2194,6 +2198,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       expect(observable.getCurrentResult()).toEqualApolloQueryResult({
@@ -2201,6 +2206,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       void observable.refetch();
@@ -2210,12 +2216,16 @@ describe("ObservableQuery", () => {
         loading: true,
         networkStatus: NetworkStatus.refetch,
         partial: false,
+        // TODO: Determine if this is the right value
+        source: "cache",
       });
       expect(observable.getCurrentResult()).toEqualApolloQueryResult({
         data: dataOneWithTypename,
         loading: true,
         networkStatus: NetworkStatus.refetch,
         partial: false,
+        // TODO: Determine if this is the right value
+        source: "cache",
       });
 
       await expect(stream).toEmitApolloQueryResult({
@@ -2223,12 +2233,14 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
       expect(observable.getCurrentResult()).toEqualApolloQueryResult({
         data: dataTwoWithTypename,
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       await expect(stream).not.toEmitAnything();
@@ -2271,6 +2283,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: 7,
         partial: false,
+        source: "network",
       });
     });
 
@@ -2292,6 +2305,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: 7,
         partial: false,
+        source: "network",
       });
 
       const observable = client.watchQuery({ query, variables });
@@ -2301,6 +2315,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "cache",
       });
     });
 
@@ -2395,6 +2410,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.error,
         partial: false,
+        source: "network",
       });
       expect(currentResult).toEqualApolloQueryResult({
         data: dataOne,
@@ -2404,6 +2420,7 @@ describe("ObservableQuery", () => {
         // returned from `observable.result()`. These should match
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
     });
 
@@ -2483,12 +2500,14 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
       expect(currentResult).toEqualApolloQueryResult({
         data: dataOne,
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
     });
 
@@ -2538,6 +2557,7 @@ describe("ObservableQuery", () => {
         loading: true,
         networkStatus: NetworkStatus.loading,
         partial: true,
+        source: "cache",
       });
 
       const stream = new ObservableStream(observable);
@@ -2547,12 +2567,14 @@ describe("ObservableQuery", () => {
         loading: true,
         networkStatus: NetworkStatus.loading,
         partial: true,
+        source: "cache",
       });
       expect(observable.getCurrentResult()).toEqualApolloQueryResult({
         data: dataOne,
         loading: true,
         networkStatus: NetworkStatus.loading,
         partial: true,
+        source: "cache",
       });
 
       await expect(stream).toEmitApolloQueryResult({
@@ -2560,12 +2582,14 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
       expect(observable.getCurrentResult()).toEqualApolloQueryResult({
         data: superDataOne,
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       await expect(stream).not.toEmitAnything();
@@ -2594,6 +2618,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       const observable = client.watchQuery({
@@ -2623,6 +2648,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       await expect(stream).not.toEmitAnything();
@@ -2742,6 +2768,7 @@ describe("ObservableQuery", () => {
         // TODO: This should be true since there are still outstanding chunks
         // that haven't been processed.
         partial: false,
+        source: "network",
       });
 
       expect(obs.getCurrentResult()).toEqualApolloQueryResult({
@@ -2754,6 +2781,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: true,
+        source: "network",
       });
 
       link.simulateResult(
@@ -2791,6 +2819,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       expect(obs.getCurrentResult()).toEqualApolloQueryResult({
@@ -2807,6 +2836,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       // This 2nd identical check is intentional to ensure calling this function
@@ -2825,6 +2855,7 @@ describe("ObservableQuery", () => {
         loading: false,
         networkStatus: NetworkStatus.ready,
         partial: false,
+        source: "network",
       });
 
       await expect(stream).not.toEmitAnything();
@@ -2883,41 +2914,52 @@ describe("ObservableQuery", () => {
           ...loadingStates.loading,
           data: cacheValues.initial,
           partial: false,
+          source: "cache",
         },
         resultAfterSubscribe: {
           ...loadingStates.loading,
           data: cacheValues.initial,
           partial: false,
+          source: "cache",
         },
         resultAfterCacheUpdate1: {
           ...loadingStates.loading,
           data: cacheValues.update1,
           partial: false,
+          source: "cache",
         },
         resultAfterLinkNext: {
           ...loadingStates.done,
           data: cacheValues.link,
           partial: false,
+          source: "network",
         },
         resultAfterCacheUpdate2: {
           ...loadingStates.done,
           data: cacheValues.update2,
           partial: false,
+          // TODO: Determine if this is correct
+          source: "network",
         },
         resultAfterCacheUpdate3: {
           ...loadingStates.refetching,
           data: cacheValues.update3,
           partial: false,
+          // TODO: Determine if this is correct
+          source: "network",
         },
         resultAfterRefetchNext: {
           ...loadingStates.done,
           data: cacheValues.refetch,
           partial: false,
+          source: "network",
         },
         resultAfterCacheUpdate4: {
           ...loadingStates.done,
           data: cacheValues.update4,
           partial: false,
+          // TODO: Determine if this is correct
+          source: "network",
         },
       };
 
@@ -2941,26 +2983,32 @@ describe("ObservableQuery", () => {
           ...loadingStates.done,
           data: cacheValues.link,
           partial: false,
+          source: "network",
         },
         resultAfterCacheUpdate2: {
           ...loadingStates.done,
           data: cacheValues.link,
           partial: false,
+          source: "network",
         },
         resultAfterCacheUpdate3: {
           ...loadingStates.refetching,
           data: cacheValues.link,
           partial: false,
+          source: "network",
         },
         resultAfterRefetchNext: {
           ...loadingStates.done,
           data: cacheValues.refetch,
           partial: false,
+          source: "network",
         },
         resultAfterCacheUpdate4: {
           ...loadingStates.done,
           data: cacheValues.refetch,
           partial: false,
+          // TODO: Determine if this is correct
+          source: "network",
         },
       };
 
@@ -3032,25 +3080,39 @@ describe("ObservableQuery", () => {
           ...loadingStates.done,
           data: cacheValues.initial,
           partial: false,
+          source: "cache",
         },
         resultAfterSubscribe: {
           ...loadingStates.done,
           data: cacheValues.initial,
           partial: false,
+          source: "cache",
         },
         resultAfterCacheUpdate1: {
           ...loadingStates.done,
           data: cacheValues.update1,
           partial: false,
+          source: "cache",
         },
         resultAfterLinkNext: {
           ...loadingStates.done,
           data: cacheValues.update1,
           partial: false,
+          source: "cache",
+        },
+        resultAfterCacheUpdate2: {
+          ...loadingStates.done,
+          data: cacheValues.update2,
+          partial: false,
+          source: "cache",
+        },
+        resultAfterCacheUpdate3: {
+          ...loadingStates.refetching,
+          data: cacheValues.update3,
+          partial: false,
+          source: "cache",
         },
         // like cacheAndLink:
-        // resultAfterCacheUpdate2
-        // resultAfterCacheUpdate3
         // resultAfterRefetchNext
         // resultAfterCacheUpdate4
       };
@@ -3215,12 +3277,14 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "network",
         });
         expect(observable.getCurrentResult()).toEqualApolloQueryResult({
           data: dataOne,
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "network",
         });
 
         void client.mutate({
@@ -3236,6 +3300,8 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          // TODO: Determine if this is correct
+          source: "network",
         });
         expect(observable.getCurrentResult()).toEqualApolloQueryResult({
           data: {
@@ -3244,6 +3310,8 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          // TODO: Determine if this is correct
+          source: "network",
         });
 
         await expect(stream).toEmitApolloQueryResult({
@@ -3253,6 +3321,7 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "cache",
         });
         expect(observable.getCurrentResult()).toEqualApolloQueryResult({
           data: {
@@ -3261,6 +3330,7 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "cache",
         });
 
         await expect(stream).not.toEmitAnything();
@@ -3580,6 +3650,7 @@ describe("ObservableQuery", () => {
           loading: false,
           networkStatus: NetworkStatus.ready,
           partial: false,
+          source: "network",
         });
       });
 
@@ -3635,6 +3706,7 @@ describe("ObservableQuery", () => {
       loading: false,
       networkStatus: NetworkStatus.ready,
       partial: false,
+      source: "network",
     });
 
     let invalidateCount = 0;
@@ -3792,6 +3864,7 @@ test("regression test for #10587", async () => {
           loading: true,
           networkStatus: 1,
           partial: false,
+          source: "cache",
         },
       ],
       [
@@ -3805,6 +3878,7 @@ test("regression test for #10587", async () => {
           loading: false,
           networkStatus: 7,
           partial: false,
+          source: "network",
         },
       ],
     ],
@@ -3821,6 +3895,7 @@ test("regression test for #10587", async () => {
           loading: true,
           networkStatus: 1,
           partial: false,
+          source: "cache",
         },
       ],
       [
@@ -3836,6 +3911,7 @@ test("regression test for #10587", async () => {
           loading: false,
           networkStatus: 7,
           partial: false,
+          source: "cache",
         },
       ],
       [
@@ -3850,6 +3926,7 @@ test("regression test for #10587", async () => {
           loading: false,
           networkStatus: 7,
           partial: false,
+          source: "network",
         },
       ],
     ],
@@ -3925,6 +4002,7 @@ test("handles changing variables in rapid succession before other request is com
       loading: false,
       networkStatus: NetworkStatus.ready,
       partial: false,
+      source: "network",
     });
   });
 
@@ -3941,5 +4019,6 @@ test("handles changing variables in rapid succession before other request is com
     loading: false,
     networkStatus: NetworkStatus.ready,
     partial: false,
+    source: "cache",
   });
 });
